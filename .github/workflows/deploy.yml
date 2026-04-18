@@ -78,6 +78,6 @@ jobs:
         working-directory: dev/ansible
         run: echo "${{ secrets.VAULT_PASS }}" > .vault_pass
         
-      - name: ansible
+      - name: ansible deploy
         working-directory: dev/ansible
         run: ansible-playbook deploy.yml --vault-pass-file=.vault_pass
