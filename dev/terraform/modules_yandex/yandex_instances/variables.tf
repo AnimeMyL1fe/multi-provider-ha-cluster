@@ -52,3 +52,4 @@ variable "vm_user" {
 # inventory
 variable "lb_nat_ip" {}
 variable "lb_ip" {}
+

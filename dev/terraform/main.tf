@@ -17,7 +17,6 @@ module "yandex_instances" {
   security_group_id = module.yandex_network.sg_id
   lb_nat_ip         = module.yandex_balancer.lb_nat_ip
   lb_ip             = module.yandex_balancer.lb_ip
-  folder_id         = var.folder_id
 }
 
 module "yandex_balancer" {
