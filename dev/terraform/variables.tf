@@ -80,9 +80,6 @@ variable "vms_profile" {
   }
 }
 
-variable "folder_id" {
-  type = string
-}
 
 #======================================
 # YANDEX_BALANCER_GROUP VARIABLES
