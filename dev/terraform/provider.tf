@@ -21,6 +21,5 @@ terraform {
 
 provider "yandex" {
   zone      = var.yandex_zone
-  folder_id = var.folder_id
 }
 
