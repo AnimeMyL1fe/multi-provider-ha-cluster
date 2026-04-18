@@ -6,8 +6,8 @@ on:
 env:
   AWS_ACCESS_KEY: "${{ secrets.YC_S3_ACCESS_KEY }}"
   AWS_SECRET_ACCESS_KEY: "${{ secrets.YC_S3_SECRET_KEY }}"
-  TF_VAR_cloud_id: "${{ secrets.YC_CLOUD_ID }}"
-  TF_VAR_folder_id: "${{ secrets.YC_FOLDER_ID }}"
+  YC_CLOUD_ID: "${{ secrets.YC_CLOUD_ID }}"
+  YC_FOLDER_ID: "${{ secrets.YC_FOLDER_ID }}"
   YC_SERVICE_ACCOUNT_KEY_FILE: "${{ github.workspace }}/.secrets/sa-key.json"
 jobs:
   checl-my-runner:
