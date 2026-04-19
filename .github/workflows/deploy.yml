@@ -70,14 +70,7 @@ jobs:
         working-directory: dev/terraform
         run: terraform plan
 
-      - name: terraform apply
+      - name: terraform destroy
         working-directory: dev/terraform
-        run: terraform apply -auto-approve
+        run: terraform destroy -auto-approve
 
-      - name: create ansiible vault pass
-        working-directory: dev/ansible
-        run: echo "${{ secrets.VAULT_PASS }}" > .vault_pass
-        
-      - name: ansible
-        working-directory: dev/ansible
-        run: ansible-playbook deploy.yml --vault-pass-file=.vault_pass
