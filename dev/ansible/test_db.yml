@@ -1,0 +1,11 @@
+---
+- hosts: etcd_servers
+  roles:
+    - etcd
+
+- hosts: mwdb_servers_master
+  roles:
+    - mw_db_patroni
+
+- hosts: mwdb_servers_replica
+    - mw_db_patroni

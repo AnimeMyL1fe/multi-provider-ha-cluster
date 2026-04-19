@@ -11,8 +11,8 @@ mw_db_name: "wikidb"
 mw_db_password: "{{ vault_mw_db_password }}"
 zbxdb_password: "{{ vault_zbxdb_password }}"
 mediawiki_admin_pass: "{{ vault_mediawiki_admin_pass }}"
-s3_key: "vault_s3_key"
-s3_secret: "vault_s3_secret"
+s3_key: "{{ vault_s3_key }}"
+s3_secret: "{{ vault_s3_secret }}"
 #---------
 # zabbix-agent2 plugins
 #---------
@@ -24,6 +24,3 @@ zxb_agent_plugins:
 #-------
 # backup
 #-------
-
-db_backup_file: "/tmp/mw_db_backup_{{ ansible_date_time.date }}.sql"
-web_backup_file: "/tmp/mw_web_backup_{{ ansible_date_time.date }}.tar.zst"

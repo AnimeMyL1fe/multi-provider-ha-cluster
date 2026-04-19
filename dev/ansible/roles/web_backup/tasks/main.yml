@@ -1,23 +1,32 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for web_backup
-- name: create archive
-  archive:
-    path: /var/www/mediawiki
-    dest: "{{ web_backup_file }}"
-    format: zstd
+- name: install aws
+  apt:
+    name: awscli
+    state: present
+    upddate_cache: yes
 
-- name: copy on ansible master host
-  fetch:
-    src: "{{ web_backup_file }}"
-    dest: "/backups/wiki/{{ inventory_hostname }}_{{ ansible_date_time.date }}.tar.zst"
-    flat: yes
+- name: copy script
+  template:
+    src: web_backup.sh.j2
+    dest: /usr/local/bin/web_backup.sh
+    mode: "0755"
 
-- name: remove file
-  file:
-    path: "{{ web_backup_file }}"
-    state: absent
+- name: copy service unit
+  template:
+    src: web_backup.service.j2
+    dest: /etc/systemd/system/web_backup.service
+  notify: reload daemon
 
+- name: copy timer unit
+  template:
+    src: web_backup.timer.j2
+    dest: /etc/systemd/system/web_backup.timer
+  notify: reload daemon
 
-
-
+- name: start timer
+  systemd:
+    name: web_backup.timer
+    enabled: yes
+    state: started

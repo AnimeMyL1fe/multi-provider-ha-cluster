@@ -1,0 +1,18 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mw_db_patroni
+- name: postgresql stop
+  service:
+    name: postgresql
+    state: stopped
+
+- name: install patroni
+  apt:
+    name: patroni
+    state: present
+    update_cache: yes
+
+- name: copy config patroni
+  template:
+    src: patroni.yml.j2
+    dest: /etc/patroni.yml

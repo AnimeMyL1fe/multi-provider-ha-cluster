@@ -13,6 +13,6 @@ if [ -s "$BACKUP_PATH" ]; then
     /usr/bin/aws s3 cp --endpoint-url https://storage.yandexcloud.net "$BACKUP_PATH" "s3://ya-prac-grishin/backups/{{ inventory_hostname }}_${BACKUP_DATE}.sql"
     rm "$BACKUP_PATH"
 else
-    echo "Backup failed! Check $LOG_PATH"
+    echo "файла нет, чек journalctl"
     exit 1
 fi

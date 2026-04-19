@@ -32,6 +32,16 @@ dev:
 %{ endif ~}
 %{ endfor ~}
 
+      # --- ETCD SERVERS ---
+    etcd_servers:
+%{for name, vm in vms ~}
+%{ if length(regexall("etcd", name)) > 0 ~}
+      hosts:
+        ${name}:
+          ansible_host: ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
+
     # --- LB SERVERS --- 
     lb_servers:
       hosts:
@@ -56,7 +66,7 @@ dev:
 
   vars:
     ansible_user: ${ans_user}
-    ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q -i ${ans_ssh_key}  ${ans_user}@${lb_nat_ip1}"'
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o ProxyCommand="ssh -W %h:%p -q -i ${ans_ssh_key}  ${ans_user}@${lb_nat_ip1}"'
     ansible_ssh_private_key_file: ${ans_ssh_key} 
     connection_protocol: ssh
     ansible_become: true 

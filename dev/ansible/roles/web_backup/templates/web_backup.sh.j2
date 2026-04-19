@@ -1,0 +1,15 @@
+#!/bin/bash
+# --- VARIABLES ---
+WEB_PATH="/var/www/mediawiki"
+BACKUP_DATE=$(date +%Y-%m-%d_%H-%M-%S)
+BACKUP_PATH="/tmp/{{ mw_db_name }}_${BACKUP_DATE}.sql"
+
+tar czf "$WEB_PATH" "$BACKUP_PATH"
+
+if [ -s "$BACKUP_PATH" ]; then
+    /usr/bin/aws s3 cp --endpoint-url https://storage.yandexcloud.net "$BACKUP_PATH" "s3://ya-prac-grishin/backups/web/{{ inventory_hostname }}_${BACKUP_DATE}.tar.gz"
+    rm "$BACKUP_PATH"
+else
+    echo "файла нет, чек journalctl"
+    exit 1
+fi

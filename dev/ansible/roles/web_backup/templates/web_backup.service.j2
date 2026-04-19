@@ -1,0 +1,9 @@
+[Unit]
+Description=Web Backup
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/web_backup.sh
+User=root
+Environment=AWS_ACCESS_KEY_ID={{ s3_key }}
+Environment=AWS_SECRET_ACCESS_KEY={{ s3_secret }}
+Environment=AWS_DEFAULT_REGION=ru-central1

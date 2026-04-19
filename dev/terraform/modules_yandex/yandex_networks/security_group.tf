@@ -40,6 +40,28 @@ resource "yandex_vpc_security_group" "sg1" {
     port           = "22"
   }
 
+  ingress {
+    protocol       = "TCP"
+    description    = "etcd-client"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "2379"
+  }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "etcd-peer"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "2380"
+  }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "patroni-api"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "8008"
+  }
+
+
 
 
   egress {

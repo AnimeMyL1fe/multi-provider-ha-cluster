@@ -1,0 +1,23 @@
+scope: postgres
+name: {{ inventory_hostname }}
+
+
+restapi:
+listen: 0.0.0.0:8008
+connect_address: {{ ansible_default_ipv4.address }}:8008
+
+etcd:
+host: 
+    - {{ hostvars['mw_db_master']['ansible_host'] }}:2379
+    - {{ hostvars['mw_db_replica']['ansible_host'] }}:2379
+postgresql:
+listen: 0.0.0.0:5432
+connect_address: {{ ansible_default_ipv4.address }}:5432
+data_dir: /var/lib/postgresql/data
+authentication:
+    replication:
+        username: {{ mw_db_user }}
+        password: {{ mw_db_password }}
+    superuser:
+        username: postgres
+        password: {{ mw_db_password }}

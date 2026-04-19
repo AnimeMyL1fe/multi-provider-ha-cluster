@@ -1,0 +1,25 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for etcd
+- name: install etcd
+  apt:
+    name: etcd
+    state: present
+    update_cache: yes
+
+- name: stop etcd
+  service:
+    name: etcd.service
+    state: stopped
+    
+- name: etcd config
+  template:
+    src: etcd.j2
+    dest: /etc/default/etcd
+  notify: restart etcd
+
+- name: etcd enabled
+  service: 
+    name: etcd
+    enabled: yes
+    state: started

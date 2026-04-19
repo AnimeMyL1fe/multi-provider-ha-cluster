@@ -2,7 +2,6 @@ resource "yandex_compute_instance_group" "lb_group" {
   name                = var.lb_group.name
   folder_id           = var.lb_group.folder_id
   service_account_id  = var.lb_group.service_id
-# deletion_protection = true
   instance_template {
     platform_id = var.lb_group.platform_id
     resources {
