@@ -1,0 +1,8 @@
+[Unit]
+Description=Run pg_backup daily
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+Persistent=true
+[Install]
+WantedBy=timers.target

@@ -2,15 +2,8 @@
 - hosts: all
   gather_facts: yes
 
-- hosts: mwdb_servers_master
-  roles:
-    - bootstrap
-    - mw_db_master
- 
 - hosts: mwdb_servers_replica
   roles:
-    - bootstrap
-    - mw_db_replica
     - mw_backup_db
 
 

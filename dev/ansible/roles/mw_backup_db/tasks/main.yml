@@ -1,33 +1,32 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for mw_pg_backup_db
-- name: postgresqk pg_dump
-  postgresql_db:
-    become_user: postgres
-    state: dump
-    name: "{{ mwdb_name }}"
-    target: "{{ db_backup_file }}"
+- name: install aws-cli
+  apt:
+    name: awscli
+    state: present
+    update_cache: yes
 
-- name: copy on ansible master host
-  fetch:
-    src: "{{ db_backup_file }}"
-    dest: "/backups/db/{{ inventory_hostname }}_{{ ansible_date_time.date }}.sql"
-    flat: yes
+- name: copy script
+  template:
+    src: pg_backup.sh.j2
+    dest: /usr/local/bin/pg_backup.sh
+    mode: '0755'
 
-- name: remove file
-  file:
-    path: "{{ db_backup_file }}"
-    state: absent
+- name: cpopy service unit
+  template:
+    src: pg_backup.service.j2
+    dest: /etc/systemd/system//pg_backup.service
+  notify: reload system
 
+- name: copy timer unit
+  template:
+    src: pg_backup.timer.j2
+    dest: /etc/systemd/system/pg_backup.timer
+  notify: reload system
 
-
-- amazon.aws.s3_bucket:
-    name: "ya-prac-grishin"
-    endpoint_url: "https://storage.yandexcloud.net"
-    state: present 
-    key: "bacup/db/{{ inventory_hostname }}_{{ ansible_date_time.date }}.sql"
-    src: "{{ db_backup_file }}"
-    mode: put
-    region: "ru-central1"
-    access_key: "{{ my_key }}"
-    secret_key: "{{ my_secret }}"
+- name: start timer
+  systemd:
+    name: pg_backup.timer
+    enabled: yes
+    state: started

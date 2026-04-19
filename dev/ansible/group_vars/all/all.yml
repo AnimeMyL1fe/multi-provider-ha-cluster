@@ -9,11 +9,10 @@ mw_db_name: "wikidb"
 # secrets
 #--------
 mw_db_password: "{{ vault_mw_db_password }}"
-zbxdb_password: "{{ valut_zbxdb_password }}"
+zbxdb_password: "{{ vault_zbxdb_password }}"
 mediawiki_admin_pass: "{{ vault_mediawiki_admin_pass }}"
-yc_access_key: "{{ valut_yc_access_key }}"
-yc_secret_key: "{{ valut_yc_secret_key }}"
-
+s3_key: "vault_s3_key"
+s3_secret: "vault_s3_secret"
 #---------
 # zabbix-agent2 plugins
 #---------

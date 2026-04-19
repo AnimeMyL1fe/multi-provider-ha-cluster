@@ -1,0 +1,18 @@
+#!/bin/bash
+# DB proxy_pass
+export PGPASSWORD="{{ mw_db_password }}"
+
+# VARIABLES
+BACKUP_DATE=$(date +%Y-%m-%d_%H-%M-%S)
+BACKUP_PATH="/tmp/{{ mw_db_name }}_${BACKUP_DATE}.sql"
+
+# BACKUP
+/usr/bin/pg_dump -h 127.0.0.1 -U {{ mw_db_user }} {{ mw_db_name }} > "$BACKUP_PATH"
+
+if [ -s "$BACKUP_PATH" ]; then
+    /usr/bin/aws s3 cp --endpoint-url https://storage.yandexcloud.net "$BACKUP_PATH" "s3://ya-prac-grishin/backups/{{ inventory_hostname }}_${BACKUP_DATE}.sql"
+    rm "$BACKUP_PATH"
+else
+    echo "Backup failed! Check $LOG_PATH"
+    exit 1
+fi
