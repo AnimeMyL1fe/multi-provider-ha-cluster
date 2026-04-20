@@ -1,10 +1,20 @@
-#SPDX-License-Identifier: MIT-0
----
-# tasks file for mw_db_patroni
-- name: postgresql stop
-  service:
+- name: stop and disable postgresql
+  systemd:
     name: postgresql
     state: stopped
+    enabled: no
+
+- name: install etcd
+  apt:
+    name: etcd
+    state: present
+    update_cache: yes
+
+- name: etcd config
+  template:
+    src: etcd.j2
+    dest: /etc/default/etcd
+  notify: restart etcd
 
 - name: install patroni
   apt:
@@ -15,4 +25,21 @@
 - name: copy config patroni
   template:
     src: patroni.yml.j2
-    dest: /etc/patroni.yml
+    dest: /etc/patroni/config.yml
+
+- name: fix permissions for postgres
+  file:
+    path: /var/lib/postgresql/data
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: '0700'
+
+- name: start services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - etcd
+    - patroni

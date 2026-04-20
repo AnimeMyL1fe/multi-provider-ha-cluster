@@ -3,53 +3,45 @@ dev:
     # --- WEB SERVERS ---
     web_servers: 
       hosts: 
-        mw-web1:
-          ansible_host: 10.10.10.32
-          db_host: 10.10.10.33
-        mw-web2:
-          ansible_host: 10.10.10.7
-          db_host: 10.10.10.33
 
     # --- MW_DB_MASTER SERVERS --- 
     mwdb_servers_master:
       hosts:
-        mw-db-master:
-          ansible_host: 10.10.10.33
 
+    # --- MW_DB_CLUSTERR SERVERS --- 
+    mwdb_postgresql_servers:
+      hosts:
+        mw-postgresql-1:
+          ansible_host: 10.10.10.19
+        mw-postgresql-2:
+          ansible_host: 10.10.10.10
+        mw-postgresql-3:
+          ansible_host: 10.10.10.21
 
     # --- MW_DB_REPLICA SERVERS --- 
     mwdb_servers_replica:
       hosts:
-        mw-db-replica:
-          ansible_host: 10.10.10.5
 
       # --- ETCD SERVERS ---
     etcd_servers:
-      hosts:
-        etcd:
-          ansible_host: 10.10.10.25
 
     # --- LB SERVERS --- 
     lb_servers:
       hosts:
         lb-1:
-          ansible_host: 111.88.240.16
-          internal_ip:  10.10.10.41          
+          ansible_host: 111.88.254.127
+          internal_ip:  10.10.10.27          
         lb-2:
-          ansible_host: 84.252.131.51
-          internal_ip:  10.10.10.10     
+          ansible_host: 89.169.159.53
+          internal_ip:  10.10.10.9     
 
 
 
       # --- ZBX SERVERS ---
     zbx_servers:
-      hosts:
-        zbx-server1:
-          ansible_host: 10.10.10.29
 
   vars:
     ansible_user: ubuntu
-    ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -i ~/.ssh/yandex_key  ubuntu@111.88.240.16"'
     ansible_ssh_private_key_file: ~/.ssh/yandex_key 
     connection_protocol: ssh
     ansible_become: true 

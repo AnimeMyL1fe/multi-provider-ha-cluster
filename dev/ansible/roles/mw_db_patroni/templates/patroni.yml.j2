@@ -1,23 +1,50 @@
 scope: postgres
 name: {{ inventory_hostname }}
 
-
 restapi:
-listen: 0.0.0.0:8008
-connect_address: {{ ansible_default_ipv4.address }}:8008
+  listen: 0.0.0.0:8008
+  connect_address: {{ ansible_default_ipv4.address }}:8008
 
 etcd:
-host: 
-    - {{ hostvars['mw_db_master']['ansible_host'] }}:2379
-    - {{ hostvars['mw_db_replica']['ansible_host'] }}:2379
+  hosts:
+{% for host in groups['mwdb_postgresql_servers'] %}
+    - {{ hostvars[host]['ansible_host'] }}:2379
+{% endfor %}
+
+bootstrap:
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    postgresql:
+      parameters:
+        hot_standby: 'on'
+        max_connections: 100
+        max_wal_senders: 10
+        wal_keep_size: 128MB
+        wal_level: replica
+
+      use_pg_rewind: true
+
+      pg_hba:
+        - host replication wikiuser 10.10.10.0/24 md5
+        - host all all 10.10.10.0/24 md5
+        - host all all 127.0.0.1/32 trust
+
+  initdb:
+    - encoding: UTF8
+    - locale: C.UTF-8
+    - data-checksums
+
 postgresql:
-listen: 0.0.0.0:5432
-connect_address: {{ ansible_default_ipv4.address }}:5432
-data_dir: /var/lib/postgresql/data
-authentication:
+  bin_dir: /usr/lib/postgresql/14/bin
+  listen: 0.0.0.0:5432
+  connect_address: {{ ansible_default_ipv4.address }}:5432
+  data_dir: /var/lib/postgresql/data
+  authentication:
     replication:
-        username: {{ mw_db_user }}
-        password: {{ mw_db_password }}
+      username: {{ mw_db_user }}
+      password: "{{ mw_db_password }}"
     superuser:
-        username: postgres
-        password: {{ mw_db_password }}
+      username: postgres
+      password: "{{ mw_db_password }}"
+  

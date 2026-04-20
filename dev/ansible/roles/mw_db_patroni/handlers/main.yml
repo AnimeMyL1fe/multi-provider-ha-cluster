@@ -1,3 +1,8 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # handlers file for mw_db_patroni
+- name: restart etcd
+  service:
+    name: etcd
+    state: restarted
+    

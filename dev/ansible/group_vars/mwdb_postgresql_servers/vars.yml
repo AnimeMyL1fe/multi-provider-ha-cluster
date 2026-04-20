@@ -1,0 +1,2 @@
+# etcd
+etcd_cluster_string: "{% for host in groups['mwdb_postgresql_servers'] %}{{ host }}=http://{{ hostvars[host]['ansible_host'] }}:2380{% if not loop.last %},{% endif %}{% endfor %}"
