@@ -40,8 +40,10 @@ jobs:
           vm_configuration = {
           "mw-web1" = { disk_name = "mw-disk1", disk_type = "network-ssd", vm_name = "mw-web1", vm_profile = "web" }
           "mw-web2" = { disk_name = "mw-disk2", disk_type = "network-ssd", vm_name = "mw-web2", vm_profile = "web" }
-          "mw-db-master" = { disk_name = "mw-db1", disk_type = "network-ssd", vm_name = "mw-db1", vm_profile = "db" }
-          "mw-db-replica" = { disk_name = "mw-db2", disk_type = "network-ssd", vm_name = "mw-db2", vm_profile = "db" }
+          "mw-postgresql-1" = { disk_name = "mw-psql-1", disk_type = "network-ssd", vm_name = "mw-psql-1", vm_profile = "db" }
+          "mw-postgresql-2" = { disk_name = "mw-psql-2", disk_type = "network-ssd", vm_name = "mw-psql-2", vm_profile = "db" }
+          "mw-postgresql-3" = { disk_name = "mw-psql-3", disk_type = "network-ssd", vm_name = "mw-psql-3", vm_profile = "db" }
+          "haproxy-db" = { disk_name = "haproxy-db-disk", disk_type = "network-ssd", vm_name = "haproxy-db", vm_profile = "db" }
           "zbx-server1" = { disk_name = "zabbix-disk1", disk_type = "network-ssd", vm_name = "zbx-server1", vm_profile = "zbx" }
           }
           yc_region = "ru-central1-a"
