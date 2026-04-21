@@ -1,6 +1,7 @@
 - name: stop and disable postgresql
   systemd:
-    name: postgresql
+    name: 
+      - postgresql
     state: stopped
     enabled: no
 

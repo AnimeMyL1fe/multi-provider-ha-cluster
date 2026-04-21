@@ -1,0 +1,34 @@
+global
+    maxconn 100
+ 
+defaults
+    log global
+    mode tcp
+    retries 2
+    timeout client 30m
+    timeout connect 4s
+    timeout server 30m
+    timeout check 5s
+
+    # --- Master  ---
+listen postgres_master
+    bind *:5000
+    option httpchk GET /master
+    http-check expect status 200
+    default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+    # Сюда закидываем все ноды, HAProxy сам выберет ту, которая ответит на /master
+    server patroni1 {{ hostvars['mw-postgresql-1']['ansible_host'] }}:5432 check port 8008
+    server patroni2 {{ hostvars['mw-postgresql-2']['ansible_host'] }}:5432 check port 8008
+    server patroni3 {{ hostvars['mw-postgresql-3']['ansible_host'] }}:5432 check port 8008
+
+# --- Replicas ---
+listen postgres_replicas
+    bind *:5001
+    option httpchk GET /replica
+    http-check expect status 200
+    default-server inter 3s fall 3 rise 2
+    # Сюда закидываем все ноды, HAProxy будет слать SELECT-запросы только на реплики
+    server patroni1 {{ hostvars['mw-postgresql-1']['ansible_host'] }}:5432 check port 8008
+    server patroni2 {{ hostvars['mw-postgresql-2']['ansible_host'] }}:5432 check port 8008
+    server patroni3 {{ hostvars['mw-postgresql-3']['ansible_host'] }}:5432 check port 8008
+

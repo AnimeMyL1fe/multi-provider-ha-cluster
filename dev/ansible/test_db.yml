@@ -4,3 +4,8 @@
     - bootstrap
     - mwdb_postgresql
     - mw_db_patroni
+
+- hosts: haproxy_servers
+  roles:
+    - bootstrap
+    - lb_nginx
