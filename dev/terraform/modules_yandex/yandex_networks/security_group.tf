@@ -61,6 +61,19 @@ resource "yandex_vpc_security_group" "sg1" {
     port           = "8008"
   }
 
+  ingress {
+    protocol       = "TCP"
+    description    = "haproxy-in"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "5000"
+  }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "haproxy-out"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "5001"
+  }
 
 
 

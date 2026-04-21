@@ -12,11 +12,11 @@ dev:
     mwdb_postgresql_servers:
       hosts:
         mw-postgresql-1:
-          ansible_host: 10.10.10.16
+          ansible_host: 10.10.10.14
         mw-postgresql-2:
-          ansible_host: 10.10.10.8
+          ansible_host: 10.10.10.32
         mw-postgresql-3:
-          ansible_host: 10.10.10.15
+          ansible_host: 10.10.10.25
 
     # --- MW_DB_REPLICA SERVERS --- 
     mwdb_servers_replica:
@@ -29,17 +29,17 @@ dev:
     lb_servers:
       hosts:
         lb-1:
-          ansible_host: 111.88.241.174
-          internal_ip:  10.10.10.7          
+          ansible_host: 89.169.134.220
+          internal_ip:  10.10.10.29          
         lb-2:
-          ansible_host: 46.21.245.148
-          internal_ip:  10.10.10.3     
+          ansible_host: 111.88.247.85
+          internal_ip:  10.10.10.11     
   
     # --- HAPROXY SERVERS ---
     haproxy_servers:
       hosts:
         haproxy-db:
-          ansible_host: 10.10.10.21
+          ansible_host: 10.10.10.17
 
 
       # --- ZBX SERVERS ---

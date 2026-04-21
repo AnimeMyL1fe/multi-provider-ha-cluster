@@ -1,5 +1,5 @@
 Host bastion
-    HostName 111.88.241.174
+    HostName 89.169.134.220
     User ubuntu
     IdentityFile ~/.ssh/yandex_key
     StrictHostKeyChecking no
@@ -9,28 +9,28 @@ Host bastion
     ServerAliveCountMax 5
 
 Host haproxy-db
-    HostName 10.10.10.21
+    HostName 10.10.10.17
     ProxyJump bastion
     User ubuntu
     IdentityFile ~/.ssh/yandex_key
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 Host mw-postgresql-1
-    HostName 10.10.10.16
+    HostName 10.10.10.14
     ProxyJump bastion
     User ubuntu
     IdentityFile ~/.ssh/yandex_key
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 Host mw-postgresql-2
-    HostName 10.10.10.8
+    HostName 10.10.10.32
     ProxyJump bastion
     User ubuntu
     IdentityFile ~/.ssh/yandex_key
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 Host mw-postgresql-3
-    HostName 10.10.10.15
+    HostName 10.10.10.25
     ProxyJump bastion
     User ubuntu
     IdentityFile ~/.ssh/yandex_key

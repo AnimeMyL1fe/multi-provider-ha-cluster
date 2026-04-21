@@ -8,4 +8,4 @@
 - hosts: haproxy_servers
   roles:
     - bootstrap
-    - lb_nginx
+    - lb_hapoxy
