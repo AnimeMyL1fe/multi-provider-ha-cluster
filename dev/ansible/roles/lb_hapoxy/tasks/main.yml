@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for lb_hapoxy
+- name: install haproxy
+  apt:
+    name: haproxy
+    state: present
+    update_cache: yes
+
+- name: enabled haproxy
+  service:
+    name: haproxy
+    state: started
+    enabled: yes

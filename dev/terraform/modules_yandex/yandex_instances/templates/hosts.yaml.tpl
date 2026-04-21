@@ -60,7 +60,16 @@ dev:
         ${lb_name2}:
           ansible_host: ${lb_nat_ip2}
           internal_ip:  ${lb_ip2}     
-
+  
+    # --- HAPROXY SERVERS ---
+    haproxy_servers:
+%{for name, vm in vms ~}
+%{ if length(regexall("haproxy", name)) > 0 ~}
+      hosts:
+        ${name}:
+          ansible_host: ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
 
 
       # --- ZBX SERVERS ---

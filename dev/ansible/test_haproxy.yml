@@ -1,0 +1,5 @@
+---
+- hosts: haproxy_servers
+  roles:
+    - bootstrap
+    - lb_hapoxy
