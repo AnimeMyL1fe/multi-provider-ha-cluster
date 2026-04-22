@@ -8,7 +8,7 @@ terraform {
     endpoints = {
       s3 = "https://storage.yandexcloud.net"
     }
-    bucket = "ya-prac-grishin"
+    bucket = "ya-prac-grishin2"
     region = "ru-central1"
     key    = "prac/instance/terraform.tfstate"
 
