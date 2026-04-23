@@ -1,6 +1,5 @@
 module "yandex_network" {
   source        = "./modules_yandex/yandex_networks"
-
   allowed_ports = var.allowed_ports
   cidr_v4       = var.cidr_v4
 }
@@ -17,6 +16,7 @@ module "yandex_instances" {
   security_group_id = module.yandex_network.sg_id
   lb_nat_ip         = module.yandex_balancer.lb_nat_ip
   lb_ip             = module.yandex_balancer.lb_ip
+  bastion_staitc_ip = var.bastion_staitc_ip
 }
 
 module "yandex_balancer" {
@@ -32,6 +32,7 @@ module "yandex_balancer" {
   path_ssh          = var.path_ssh
   private_path_ssh  = var.private_path_ssh
   vm_user           = var.vm_user
+  balancer_ip       = var.balancer_ip
 }
 
 

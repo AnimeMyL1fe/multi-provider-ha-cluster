@@ -27,7 +27,7 @@
     php maintenance/run.php install 
     --dbtype="postgres" 
     --dbname="{{ mw_db_name }}" 
-    --dbserver="{{ db_host }}" 
+    --dbserver="{{ hostvars['haproxy-db']['ansible_host'] }}" 
     --dbuser="{{ mw_db_user }}" 
     --dbpass="{{ mw_db_password}}" 
     --dbmwschema="public" 

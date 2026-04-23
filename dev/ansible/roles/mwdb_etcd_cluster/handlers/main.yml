@@ -2,7 +2,8 @@
 ---
 # handlers file for mw_db_patroni
 - name: restart etcd
-  service:
+  systemd:
     name: etcd
     state: restarted
+    daemon_reload: yes
     

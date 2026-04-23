@@ -63,3 +63,6 @@ variable "subnet_id" {}
 
 variable "security_group_id" {}
 
+variable "balancer_ip" {
+  type = string
+}

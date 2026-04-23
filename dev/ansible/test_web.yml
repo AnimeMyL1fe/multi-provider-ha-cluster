@@ -1,0 +1,11 @@
+---
+- hosts: web_servers
+  roles:
+    - bootstrap
+    - web_servers
+    - mw_db_patroni
+
+- hosts: haproxy_servers
+  roles:
+    - bootstrap
+    - lb_servers

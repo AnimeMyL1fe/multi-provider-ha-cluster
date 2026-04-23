@@ -6,7 +6,7 @@ locals {
 
 resource "local_file" "ssh_config" {
   content = templatefile("${path.module}/templates/ssh_config.tpl", {
-    bastion_ip    = var.lb_nat_ip[0]
+    bastion_ip    = data.yandex_vpc_address.bastion.external_ipv4_address[0].address
     vms           = local.ssh_ip
     ssh_user      = var.vm_user
   })

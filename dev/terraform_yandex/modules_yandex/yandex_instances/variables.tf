@@ -53,3 +53,6 @@ variable "vm_user" {
 variable "lb_nat_ip" {}
 variable "lb_ip" {}
 
+variable "bastion_staitc_ip" {
+  type = string
+}

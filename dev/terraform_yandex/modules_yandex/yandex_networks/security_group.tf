@@ -75,6 +75,20 @@ resource "yandex_vpc_security_group" "sg1" {
     port           = "5001"
   }
 
+  ingress {
+    protocol       = "TCP"
+    description    = "lb-web"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "3000"
+  }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "lb-zabbix"
+    v4_cidr_blocks = var.cidr_v4
+    port           = "3010"
+  }
+
 
 
   egress {

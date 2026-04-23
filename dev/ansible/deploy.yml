@@ -7,34 +7,38 @@
     - bootstrap
     - zbx_server
 
-- hosts: mwdb_servers_master
+- hosts: etcd_servers
   roles:
     - bootstrap
-    - mw_db_master
+    - mwdb_etcd_cluster
     - zbx_agent2
 
+- hosts: mwdb_postgresql_servers
+  roles:
+    - bootstrap
+    - mwdb_postgresql
+    - mwdb_patroni
+    - zbx_agent2
+
+- hosts: haproxy_servers
+  roles:
+    - bootstrap
+    - lb_hapoxy
+    - zbx_agent2
 
 - hosts: web_servers
   roles:
     - bootstrap
-    - mw_packages
-    - mw_nginx
-    - mw_web
+    - web_packages
+    - web_nginx
+    - web_mediawiki
     - zbx_agent2
 
 - hosts: lb_servers
   roles:
+    - bootstrap
     - lb_nginx
     - zbx_agent2
-    
-- hosts: mwdb_servers_replica
-  roles:
-    - bootstrap
-    - mw_db_replica
-    - zbx_agent2
-    
-- hosts: check
-    - final_check
 
 
 

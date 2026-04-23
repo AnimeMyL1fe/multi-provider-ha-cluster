@@ -60,22 +60,22 @@ variable "vms_profile" {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 2
-      memory        = 4
+      memory        = 2
       disk_size     = 10
     }
     "db" = {
       platform_id   = "standard-v1"
       core_fraction = 20
-      cores         = 4
-      memory        = 4
-      disk_size     = 40
+      cores         = 2
+      memory        = 2
+      disk_size     = 10
     }
     "zbx" = {
       platform_id   = "standard-v1"
       core_fraction = 20
       cores         = 2
-      memory        = 4
-      disk_size     = 20
+      memory        = 2
+      disk_size     = 10
     }
   }
 }
@@ -137,3 +137,14 @@ variable "vm_user" {
   type = string
 }
 
+#-----------------------
+# STATIC IP
+#-----------------------
+
+variable "balancer_ip" {
+  type = string
+}
+
+variable "bastion_staitc_ip" {
+  type = string
+}

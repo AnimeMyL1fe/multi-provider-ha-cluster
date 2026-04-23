@@ -1,20 +1,9 @@
+---
 - name: stop and disable postgresql
   systemd:
     name: postgresql
     state: stopped
     enabled: no
-
-- name: install etcd
-  apt:
-    name: etcd
-    state: present
-    update_cache: yes
-
-- name: etcd config
-  template:
-    src: etcd.j2
-    dest: /etc/default/etcd
-  notify: restart etcd
 
 - name: install patroni
   apt:
@@ -26,6 +15,7 @@
   template:
     src: patroni.yml.j2
     dest: /etc/patroni/config.yml
+  notify: restart patroni
 
 - name: fix permissions for postgres
   file:
@@ -37,9 +27,7 @@
 
 - name: start services
   service:
-    name: "{{ item }}"
+    name: patroni
     enabled: yes
     state: started
-  loop:
-    - etcd
-    - patroni
+

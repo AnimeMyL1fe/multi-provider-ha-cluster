@@ -10,7 +10,7 @@
 - name: install repo
   apt:
     deb: /tmp/zabbix.deb
- 
+
 - name: update cache
   apt:
     update_cache: yes

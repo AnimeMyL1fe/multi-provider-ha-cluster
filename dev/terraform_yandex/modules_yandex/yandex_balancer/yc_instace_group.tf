@@ -19,7 +19,7 @@ resource "yandex_compute_instance_group" "lb_group" {
       network_id = var.network_id
       security_group_ids  = [var.security_group_id]
       subnet_ids = [var.subnet_id]
-      nat        = true
+      nat        = false
     }
 
     metadata = {

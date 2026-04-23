@@ -12,7 +12,7 @@ defaults
 
     # --- Master  ---
 listen postgres_master
-    bind *:5000
+    bind *:5432
     option httpchk GET /master
     http-check expect status 200
     default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions

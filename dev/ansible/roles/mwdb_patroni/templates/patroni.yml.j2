@@ -7,7 +7,7 @@ restapi:
 
 etcd:
   hosts:
-{% for host in groups['mwdb_postgresql_servers'] %}
+{% for host in groups['etcd_servers'] %}
     - {{ hostvars[host]['ansible_host'] }}:2379
 {% endfor %}
 

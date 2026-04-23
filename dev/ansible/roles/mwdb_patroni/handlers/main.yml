@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for mw_etcd
+- name: restart patroni
+  service:
+    name: patroni
+    state: restarted

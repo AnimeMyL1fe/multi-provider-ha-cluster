@@ -1,30 +1,72 @@
-    db_servers:
-      hosts:
+
+
+dev:
+  children: 
+    # --- WEB SERVERS ---
+    web_servers: 
+      hosts: 
 %{for name, vm in vms ~}
-%{ if length(regexall("database", name)) > 0 ~}
+%{ if length(regexall("mw-web", name)) > 0 ~}
         ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
+          ansible_host: ${vm.private_ip}
 %{ endif ~}
 %{ endfor ~}
 
 
-    zabbix_servers:
+    # --- MW_DB_CLUSTERR SERVERS --- 
+    mwdb_postgresql_servers:
+      hosts:
 %{for name, vm in vms ~}
-%{ if length(regexall("zabbix", name)) > 0 ~}
+%{ if length(regexall("mw-postgresql", name)) > 0 ~}
+        ${name}:
+          ansible_host: ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
+
+      # --- ETCD SERVERS ---
+    etcd_servers:
+%{for name, vm in vms ~}
+%{ if length(regexall("etcd", name)) > 0 ~}
       hosts:
         ${name}:
-          ansible_host: ${vm.public_ip}
-          internal_ip:  ${vm.private_ip}
-          db_host: ${zbx_db_internal_ip}
+          ansible_host: ${vm.private_ip}
+%{ endif ~}
+%{ endfor ~}
+
+    # --- LB SERVERS --- 
+    lb_servers:
+      hosts:
+        ${lb_name1}:
+          ansible_host: ${lb_ip2} 
+        ${lb_name2}:
+          ansible_host: ${lb_ip2} 
+
+  
+    # --- HAPROXY SERVERS ---
+    haproxy_servers:
+%{for name, vm in vms ~}
+%{ if length(regexall("haproxy", name)) > 0 ~}
+      hosts:
+        ${name}:
+          ansible_host: ${vm.private_ip}
 %{ endif ~}
 %{ endfor ~}
 
 
+      # --- ZBX SERVERS ---
+    zbx_servers:
+%{for name, vm in vms ~}
+%{ if length(regexall("zbx", name)) > 0 ~}
+      hosts:
+        ${name}:
+          ansible_host: ${vm.private_ip}
+          public_ip:    ${vm.public_ip}
+          
+%{ endif ~}
+%{ endfor ~}
 
-
-
-
-
-
-
+  vars:
+    ansible_user: ${ans_user}
+    ansible_ssh_private_key_file: ${ans_ssh_key} 
+    connection_protocol: ssh
+    ansible_become: true 
