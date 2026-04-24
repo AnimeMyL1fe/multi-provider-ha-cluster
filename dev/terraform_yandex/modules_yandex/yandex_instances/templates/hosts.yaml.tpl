@@ -34,7 +34,7 @@ all:
     lb_servers:
       hosts:
         ${lb_name1}:
-          ansible_host: ${lb_ip2} 
+          ansible_host: ${lb_ip1} 
         ${lb_name2}:
           ansible_host: ${lb_ip2} 
           

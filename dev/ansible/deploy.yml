@@ -9,38 +9,6 @@
 
 - hosts: etcd_servers
   roles:
-<<<<<<< HEAD
-    - bootstrap
-    - mwdb_etcd_cluster
-    - zbx_agent2
-
-- hosts: mwdb_postgresql_servers
-  roles:
-    - bootstrap
-    - mwdb_postgresql
-    - mwdb_patroni
-    - zbx_agent2
-
-- hosts: haproxy_servers
-  roles:
-    - bootstrap
-    - lb_hapoxy
-    - zbx_agent2
-
-- hosts: web_servers
-  roles:
-    - bootstrap
-    - web_packages
-    - web_nginx
-    - web_mediawiki
-    - zbx_agent2
-
-- hosts: lb_servers
-  roles:
-    - bootstrap
-    - lb_nginx
-    - zbx_agent2
-=======
     - { role: bootstrap, tags: ['bootstrap'] }
     - { role: mwdb_etcd_cluster, tags: ['etcd'] }
     - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
@@ -70,5 +38,4 @@
     - { role: bootstrap, tags: ['bootstrap'] }
     - { role: lb_nginx, tags: ['lb', 'nginx'] }
     - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
->>>>>>> 08ad7a1 (fix mediawiki install (в процессе))
 

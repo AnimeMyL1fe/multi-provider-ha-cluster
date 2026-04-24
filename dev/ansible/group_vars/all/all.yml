@@ -21,6 +21,8 @@ zxb_agent_plugins:
   - zabbix-agent2-plugin-mssql 
   - zabbix-agent2-plugin-postgresql 
 
+external_ip: "111.88.248.177"
 #-------
 # backup
 #-------
+

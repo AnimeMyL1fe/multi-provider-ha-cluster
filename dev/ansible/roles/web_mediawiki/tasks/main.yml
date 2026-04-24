@@ -22,6 +22,7 @@
       - php8.2-intl
       - php8.2-gd
       - php8.2-curl
+      - php8.2-fpm
     state: present
     update_cache: yes
 
@@ -31,6 +32,55 @@
     state: directory
     owner: "www-data"
 
+
+- name: find leader
+  uri:
+    url: "http://{{ hostvars[item]['ansible_host'] }}:8008/master"
+    method: GET
+    return_content: no
+  register: patroni_results
+  loop: "{{ groups['mwdb_postgresql_servers'] }}"
+  failed_when: false
+  become: false
+
+- name: set leader_host
+  set_fact:
+    leader_host: "{{ hostvars[item.item]['ansible_host'] }}"
+  loop: "{{ patroni_results.results }}"
+  when: item.status == 200
+  run_once: true
+
+- name: check leader
+  fail:
+    msg: "ERROR master"
+  when: leader_host is undefined
+  run_once: true
+
+- name: create MediaWiki database user
+  community.postgresql.postgresql_user:
+    name: "{{ mw_db_user }}"
+    password: "{{ mw_db_password }}"
+    encrypted: yes
+    login_host: "{{ leader_host }}"
+    login_user: postgres
+    login_password: "{{ mw_db_password }}"
+    state: present
+  delegate_to: "{{ groups['mwdb_postgresql_servers'][0] }}"
+  run_once: true
+  become: false
+
+- name: create MediaWiki database
+  community.postgresql.postgresql_db:
+    name: "{{ mw_db_name }}"
+    owner: "{{ mw_db_user }}"
+    login_host: "{{ leader_host }}"
+    login_user: postgres
+    login_password: "{{ mw_db_password }}"
+    state: present
+  delegate_to: "{{ groups['mwdb_postgresql_servers'][0] }}"
+  run_once: true
+  become: false
+
 - name: Extract mediawiki.tar.gz into /var/www/mediawiki
   unarchive:
     src: /tmp/mediawiki-1.45.3.tar.gz
@@ -38,26 +88,16 @@
     extra_opts: [--strip-components=1]
     remote_src: yes
 
-- name: set php 8.2 as default
-  alternatives:
-    name: php
-    link: /usr/bin/php
-    path: /usr/bin/php8.2
-
 - name: install MediaWiki
   shell: >
-    php maintenance/run.php install 
+    php maintenance/install.php
     --dbtype="postgres" 
     --dbname="{{ mw_db_name }}" 
-<<<<<<< HEAD
-    --dbserver="{{ hostvars['haproxy-db']['ansible_host'] }}" 
-=======
     --dbserver="{{ hostvars['haproxy-lb']['ansible_host'] }}" 
->>>>>>> 08ad7a1 (fix mediawiki install (в процессе))
     --dbuser="{{ mw_db_user }}" 
     --dbpass="{{ mw_db_password}}"
     --dbmwschema="public" 
-    --server="http://{{ hostvars["lb-1"]["ansible_host"] }}:3000" 
+    --server="http://{{ external_ip }}" 
     --scriptpath=""
     --pass="{{ mediawiki_admin_pass }}" 
     "{{ mediawiki_name }}" "{{ mediawiki_admin_user }}"
