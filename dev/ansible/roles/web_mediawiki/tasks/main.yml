@@ -1,13 +1,29 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for mywiki
-- name: handlers to restart postgres
-  meta: flush_handlers
-
 - name: download MediaWiki
   get_url:
     url: "{{ url }}"
     dest: /tmp/
+
+- name: add php ppa repository
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+    update_cache: yes
+
+- name: install php 8.2 and dependencies
+  apt:
+    name:
+      - php8.2-cli
+      - php8.2-pgsql
+      - php8.2-xml
+      - php8.2-mbstring
+      - php8.2-intl
+      - php8.2-gd
+      - php8.2-curl
+    state: present
+    update_cache: yes
 
 - name: create directory for MediaWiki
   file:
@@ -22,14 +38,24 @@
     extra_opts: [--strip-components=1]
     remote_src: yes
 
+- name: set php 8.2 as default
+  alternatives:
+    name: php
+    link: /usr/bin/php
+    path: /usr/bin/php8.2
+
 - name: install MediaWiki
   shell: >
     php maintenance/run.php install 
     --dbtype="postgres" 
     --dbname="{{ mw_db_name }}" 
+<<<<<<< HEAD
     --dbserver="{{ hostvars['haproxy-db']['ansible_host'] }}" 
+=======
+    --dbserver="{{ hostvars['haproxy-lb']['ansible_host'] }}" 
+>>>>>>> 08ad7a1 (fix mediawiki install (в процессе))
     --dbuser="{{ mw_db_user }}" 
-    --dbpass="{{ mw_db_password}}" 
+    --dbpass="{{ mw_db_password}}"
     --dbmwschema="public" 
     --server="http://{{ hostvars["lb-1"]["ansible_host"] }}:3000" 
     --scriptpath=""

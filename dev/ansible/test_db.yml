@@ -1,9 +1,14 @@
 ---
+- hosts: etcd_servers
+  roles:
+    - bootstrap
+    - mwdb_etcd_cluster
+
 - hosts: mwdb_postgresql_servers
   roles:
     - bootstrap
     - mwdb_postgresql
-    - mw_db_patroni
+    - mwdb_patroni
 
 - hosts: haproxy_servers
   roles:

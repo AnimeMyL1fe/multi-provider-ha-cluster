@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# 1. Логируем ВСЁ в файл, чтобы понять, запускается ли скрипт вообще
+LOGFILE="/tmp/patroni_init_debug.log"
+exec > >(tee -a ${LOGFILE}) 2>&1
+
+echo "--- Script started at $(date) ---"
+
+# 2. Указываем полные пути ко всему
+PSQL="/usr/bin/psql" # Проверь командой 'which psql', может быть /usr/lib/postgresql/14/bin/psql
+export PGHOST="/var/run/postgresql"
+
+# 3. Дебаг: проверим, видит ли скрипт окружение
+echo "Current user: $(whoami)"
+echo "PGHOST: $PGHOST"
+echo "PSQL path: $PSQL"
+
+# 4. Выполняем команды
+# Используем sudo -u postgres, чтобы гарантировать выполнение от нужного пользователя, 
+# если вдруг Patroni запустил это иначе
+$PSQL -U postgres -c "CREATE USER {{ mw_db_user }} WITH ENCRYPTED PASSWORD '{{ mw_db_password }}';" || echo "User creation failed"
+$PSQL -U postgres -c "CREATE DATABASE {{ mw_db_name }} OWNER {{ mw_db_user }};" || echo "DB creation failed"
+
+echo "--- Script finished at $(date) ---"
+

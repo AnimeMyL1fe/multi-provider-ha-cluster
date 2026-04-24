@@ -26,6 +26,8 @@ bootstrap:
       use_pg_rewind: true
 
       pg_hba:
+        - local all all trust
+        - local replication all trust
         - host replication wikiuser 10.10.10.0/24 md5
         - host all all 10.10.10.0/24 md5
         - host all all 127.0.0.1/32 trust
@@ -34,6 +36,7 @@ bootstrap:
     - encoding: UTF8
     - locale: C.UTF-8
     - data-checksums
+  post_init: /usr/local/bin/init_wiki_db.sh
 
 postgresql:
   bin_dir: /usr/lib/postgresql/14/bin

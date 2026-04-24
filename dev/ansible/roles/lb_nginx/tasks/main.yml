@@ -12,24 +12,38 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: copy mediawiki config
+- name: config nginx
   template:
-    src: "{{ item.src }}"
-    dest: /etc/nginx/sites-available/{{ item.dest }}
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/nginx.conf
     mode: "0644"
-  loop:
-    - { src: 'mediawiki.conf.j2', dest: 'mediawiki.conf' }
-    - { src: 'zabbix.conf.j2', dest: 'zabbix.conf'}
   notify: restart nginx
+
+#- name: copy mediawiki config
+#  template:
+#    src: "{{ item.src }}"
+#    dest: /etc/nginx/sites-available/{{ item.dest }}
+#    mode: "0644"
+#  loop:
+#    - { src: 'mediawiki.conf.j2', dest: 'mediawiki.conf' }
+#    - { src: 'zabbix.conf.j2', dest: 'zabbix.conf'}
+#  notify: restart nginx
+
+#- name: add symlink
+#  file:
+#    src: /etc/nginx/sites-available/{{ item.dest }}
+#    path: /etc/nginx/sites-enabled/{{ item.dest }}
+#    state: link
+#  loop:
+#    - { dest: 'mediawiki.conf' }
+#    - { dest: 'zabbix.conf' }
+#  notify: restart nginx
 
 - name: add symlink
   file:
-    src: /etc/nginx/sites-available/{{ item.dest }}
-    path: /etc/nginx/sites-enabled/{{ item.dest }}
+    src: /etc/nginx/sites-available/nginx.conf
+    path: /etc/nginx/sites-enabled/nginx.conf
     state: link
-  loop:
-    - { dest: 'mediawiki.conf' }
-    - { dest: 'zabbix.conf' }
   notify: restart nginx
 
 - name: start service

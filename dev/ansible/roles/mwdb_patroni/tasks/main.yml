@@ -11,6 +11,12 @@
     state: present
     update_cache: yes
 
+- name: copy init script
+  template:
+    src: init_wiki_db.sh.j2
+    dest: /usr/local/bin/init_wiki_db.sh
+    mode: '0755'
+
 - name: copy config patroni
   template:
     src: patroni.yml.j2

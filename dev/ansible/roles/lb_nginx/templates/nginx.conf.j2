@@ -1,0 +1,32 @@
+upstream mediawiki_backend {
+    ip_hash;
+    server {{ hostvars['mw-web1']['ansible_host'] }}:80 weight=5;
+    server {{ hostvars['mw-web2']['ansible_host'] }}:80 weight=3;
+}
+
+upstream zabbix_backend {
+    server {{ hostvars['zbx-server1']['ansible_host'] }}:8080;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    # MediaWiki
+    location /wiki/ {
+        proxy_pass http://mediawiki_backend/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Zabbix
+    location /zabbix/ {
+        proxy_pass http://zabbix_backend/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
