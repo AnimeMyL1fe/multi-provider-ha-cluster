@@ -2,7 +2,8 @@
 # --- VARIABLES ---
 BACKUP_DATE=$(date +%Y-%m-%d_%H-%M-%S)
 BACKUP_PATH="/tmp/web_backup_${BACKUP_DATE}.tar.gz"
-
+S3_PATH="s3://ya-prac-grishin2/web/
+ENDPOINT="--endpoint-url https://storage.yandexcloud.net"
 # archive
 cd /var/www/
 sudo tar -czf "$BACKUP_PATH" "mediawiki"
@@ -12,6 +13,13 @@ if [ -f "$BACKUP_PATH" ]; then
     /usr/bin/aws s3 cp --endpoint-url https://storage.yandexcloud.net "$BACKUP_PATH" "s3://ya-prac-grishin2/backups/web/mw-web1_${BACKUP_DATE}.tar.gz"
     rm "$BACKUP_PATH"
     echo "Бэкап успешно отправлен в S3"
+    echo "--- Очистка старых бэкапов ---"
+    aws s3 ls $S3_PATH $ENDPOINT | sort | head -n -5 | awk '{print $4}' | while read filename; do
+        if [ -n "$filename" ]; then
+            echo "Удаляю старый бэкап: $filename"
+            aws s3 rm "${S3_PATH}${filename}" $ENDPOINT
+        fi
+    done
 else
     echo "error. архив не создан или пуст"
     exit 1
