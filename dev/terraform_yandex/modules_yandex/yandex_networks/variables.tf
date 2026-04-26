@@ -14,7 +14,9 @@ variable "yandex_zone" {
 variable "allowed_ports" {
   type = list(string)
 }
-
+variable "internal_allowed_ports" {
+  type = list(string)
+}
 #-----------------------
 # subnet
 #-----------------------

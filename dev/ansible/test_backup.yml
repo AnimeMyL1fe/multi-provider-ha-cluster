@@ -1,11 +1,9 @@
 ---
-- hosts: all
-  gather_facts: yes
-
-- hosts: mwdb_servers_replica
+- hosts: mwdb_postgresql_servers
   roles:
-    - mw_backup_db
+    - mwdb_backup
 
-
-
+- hosts: web_servers
+  roles:
+    - web_backup
 

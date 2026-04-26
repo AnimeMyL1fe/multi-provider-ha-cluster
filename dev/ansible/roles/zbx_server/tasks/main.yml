@@ -102,7 +102,7 @@
     - { key: 'DBName', value: '{{ zbxdb_name }}' }
     - { key: 'DBUser', value: '{{ zbxdb_user }}' }
     - { key: 'DBPassword', value: '{{ zbxdb_password }}' }
-    - { key: 'DBHost', value: "{{ hostvars['zbx-server1']['ansible_host'] }}"  }
+    - { key: 'DBHost', value: "127.0.0.1"  }
   notify: start service
 
 

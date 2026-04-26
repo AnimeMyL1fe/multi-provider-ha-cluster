@@ -1,8 +1,9 @@
 ---
-- hosts: all
-  gather_facts: yes
-
 - hosts: lb_servers
   roles:
     - lb_nginx
 
+- hosts: web_servers
+  roles:
+    - web_packages
+    - web_nginx

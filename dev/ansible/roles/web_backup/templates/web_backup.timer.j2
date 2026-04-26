@@ -1,8 +1,7 @@
 [Unit]
-Description=Run web_backup daily
+Description=Run web_backup каждые 3 дня
 [Timer]
-OnBootSec=5min
-OnUnitActiveSec=5min
+OnCalendar=*-*-1/3 03:00:00
 Persistent=true
 [Install]
 WantedBy=timers.target

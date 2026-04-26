@@ -17,6 +17,7 @@
     src: web.j2
     dest: /etc/nginx/sites-available/web.conf
     mode: "0644"
+  notify: restart nginx
 
 - name: add symlink
   file:

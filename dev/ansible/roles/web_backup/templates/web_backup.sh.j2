@@ -1,15 +1,18 @@
 #!/bin/bash
 # --- VARIABLES ---
-WEB_PATH="/var/www/mediawiki"
 BACKUP_DATE=$(date +%Y-%m-%d_%H-%M-%S)
-BACKUP_PATH="/tmp/{{ mw_db_name }}_${BACKUP_DATE}.sql"
+BACKUP_PATH="/tmp/web_backup_${BACKUP_DATE}.tar.gz"
 
-tar czf "$WEB_PATH" "$BACKUP_PATH"
+# archive
+cd /var/www/
+sudo tar -czf "$BACKUP_PATH" "mediawiki"
 
-if [ -s "$BACKUP_PATH" ]; then
-    /usr/bin/aws s3 cp --endpoint-url https://storage.yandexcloud.net "$BACKUP_PATH" "s3://ya-prac-grishin/backups/web/{{ inventory_hostname }}_${BACKUP_DATE}.tar.gz"
+# PUSH in S3
+if [ -f "$BACKUP_PATH" ]; then
+    /usr/bin/aws s3 cp --endpoint-url https://storage.yandexcloud.net "$BACKUP_PATH" "s3://ya-prac-grishin2/backups/web/mw-web1_${BACKUP_DATE}.tar.gz"
     rm "$BACKUP_PATH"
+    echo "Бэкап успешно отправлен в S3"
 else
-    echo "файла нет, чек journalctl"
+    echo "error. архив не создан или пуст"
     exit 1
 fi

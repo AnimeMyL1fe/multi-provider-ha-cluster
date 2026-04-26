@@ -31,12 +31,15 @@ all:
 %{ endfor ~}
 
     # --- LB SERVERS --- 
+%{for name, vm in vms ~}
+%{ if length(regexall("nginx-lb", name)) > 0 ~}
     lb_servers:
       hosts:
-        ${lb_name1}:
-          ansible_host: ${lb_ip1} 
-        ${lb_name2}:
-          ansible_host: ${lb_ip2} 
+        ${name}:
+          ansible_host: ${vm.private_ip}
+          public_ip:    ${vm.public_ip}
+%{ endif ~}
+%{ endfor ~}
           
     # --- HAPROXY SERVERS ---
     haproxy_servers:
@@ -55,7 +58,6 @@ all:
 %{ if length(regexall("zbx", name)) > 0 ~}
         ${name}:
           ansible_host: ${vm.private_ip}
-          public_ip:    ${vm.public_ip}
 %{ endif ~}
 %{ endfor ~}
 

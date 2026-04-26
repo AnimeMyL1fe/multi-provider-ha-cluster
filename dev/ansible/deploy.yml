@@ -18,6 +18,7 @@
     - { role: bootstrap, tags: ['bootstrap'] }
     - { role: mwdb_postgresql, tags: ['db', 'postgresql'] }
     - { role: mwdb_patroni, tags: ['db', 'patroni'] }
+    - { role: mwdb_backup, tags: ['db', 'backup']}
     - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
 
 - hosts: haproxy_servers
@@ -29,8 +30,10 @@
 - hosts: web_servers
   roles:
     - { role: bootstrap, tags: ['bootstrap'] }
+    - { role: web_packages, tags: ['web', 'packages']}
     - { role: web_nginx, tags: ['web', 'nginx'] }
     - { role: web_mediawiki, tags: ['web', 'mediawiki'] }
+    - { role: web_backup, tags: ['web', 'backup']}
     - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
 
 - hosts: lb_servers

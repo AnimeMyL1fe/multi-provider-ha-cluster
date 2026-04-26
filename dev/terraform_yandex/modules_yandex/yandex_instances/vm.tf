@@ -18,8 +18,8 @@ resource "yandex_compute_instance" "vm_ubuntu" {
     index               = 1
     subnet_id           = var.subnet_id
     security_group_ids  = [var.security_group_id]
-    nat                 = (each.key == "zbx-server1")
-    nat_ip_address      = (each.key == "zbx-server1") ? data.yandex_vpc_address.bastion.external_ipv4_address[0].address : null 
+    nat                 = (each.key == "nginx-lb")
+    nat_ip_address      = (each.key == "nginx-lb") ? data.yandex_vpc_address.bastion.external_ipv4_address[0].address : null 
   }
 
   metadata = {

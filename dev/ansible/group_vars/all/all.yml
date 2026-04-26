@@ -23,6 +23,9 @@ zxb_agent_plugins:
 
 external_ip: "111.88.248.177"
 #-------
-# backup
+# bpotstrap
 #-------
+bootstrap_packages: 
+  - wget
+  - acl
 
