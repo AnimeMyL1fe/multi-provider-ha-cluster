@@ -1,0 +1,19 @@
+upstream mediawiki_backend {
+    ip_hash;
+    server {{ hostvars['mw-web1']['internal_ip'] }}:80 weight=5;
+    server {{ hostvars['mw-web2']['internal_ip'] }}:80 weight=3;
+}
+
+server {
+    listen {{ lb_nginx_port }};
+    server_name _;
+    
+    location / {
+        proxy_pass http://mediawiki_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Port 3000;
+    }
+}

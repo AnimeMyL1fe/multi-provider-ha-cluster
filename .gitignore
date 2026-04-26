@@ -36,5 +36,10 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+<<<<<<< HEAD
 dev/ansible/.vault_pass
 dev/ansible/LocalSettings.php
+=======
+dev/ansible/group_vars/*
+dev/ansible/.vault_pass
+>>>>>>> main

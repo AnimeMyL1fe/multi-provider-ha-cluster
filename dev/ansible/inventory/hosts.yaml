@@ -1,0 +1,33 @@
+dev:
+  children: 
+      # --- WEB SERVERS ---
+    web_servers: 
+      hosts: 
+        mw-web1:
+          ansible_host: 111.88.242.103
+          internal_ip:  10.10.10.28
+          mwdb_host: 10.10.10.11
+        mw-web2:
+          ansible_host: 93.77.186.105
+          internal_ip:  10.10.10.4
+          mwdb_host: 10.10.10.11
+
+      # --- MW_DB SERVERS --- 
+    mwdb_servers:
+      hosts:
+        mw-db1:
+          ansible_host: 111.88.252.225
+          internal_ip:  10.10.10.11
+
+      # --- LB SERVERS ---
+    lb_servers:
+      hosts:
+        lb-1:
+          ansible_host: 111.88.247.56
+          internal_ip:  10.10.10.26
+
+  vars:
+    ansible_user: ubuntu
+    ansible_ssh_private_key_file: ~/.ssh/yandex_key 
+    connection_protocol: ssh
+    ansible_become: true 

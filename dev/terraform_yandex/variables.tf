@@ -68,7 +68,11 @@ variable "vms_profile" {
     "db" = {
       platform_id   = "standard-v1"
       core_fraction = 20
+<<<<<<< HEAD:dev/terraform_yandex/variables.tf
       cores         = 2
+=======
+      cores         = 4
+>>>>>>> main:dev/terrraform/variables.tf
       memory        = 2
       disk_size     = 10
     }

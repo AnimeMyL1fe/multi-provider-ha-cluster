@@ -1,5 +1,6 @@
 ---
 - hosts: all
+<<<<<<< HEAD
   gather_facts: yes
 
 - hosts: zbx_servers
@@ -42,3 +43,22 @@
     - { role: lb_nginx, tags: ['lb', 'nginx'] }
     - { role: zbx_agent2, tags: ['zabbix', 'zbx_agent'] }
 
+=======
+  gather_facts: yes 
+
+- hosts: mwdb_servers
+  roles:
+    - bootstrap
+    - mw_db
+
+- hosts: web_servers
+  roles:
+    - bootstrap
+    - mw_packages
+    - mw_nginx
+    - mw_web
+
+- hosts: lb_servers
+  roles:
+    - lb_nginx
+>>>>>>> main

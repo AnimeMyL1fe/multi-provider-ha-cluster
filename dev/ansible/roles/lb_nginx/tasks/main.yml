@@ -15,8 +15,13 @@
 
 - name: copy mediawiki config
   template:
+<<<<<<< HEAD
     src: "{{ item.src }}"
     dest: /etc/nginx/sites-available/{{ item.dest }}
+=======
+    src: balancer.j2
+    dest: /etc/nginx/sites-available/balancer.conf
+>>>>>>> main
     mode: "0644"
   loop:
     - { src: 'mediawiki.conf.j2', dest: 'mediawiki.conf' }
@@ -24,12 +29,18 @@
 
 - name: add symlink
   file:
+<<<<<<< HEAD
    src: /etc/nginx/sites-available/{{ item.dest }}
    path: /etc/nginx/sites-enabled/{{ item.dest }}
    state: link
   loop:
    - { dest: 'mediawiki.conf' }
    - { dest: 'zabbix.conf' }
+=======
+    src: /etc/nginx/sites-available/balancer.conf
+    path: /etc/nginx/sites-enabled/balancer.conf
+    state: link
+>>>>>>> main
   notify: restart nginx
 
  ## с yc balancer (в процессе...(нет))

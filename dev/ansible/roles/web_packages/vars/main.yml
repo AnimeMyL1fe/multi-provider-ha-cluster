@@ -2,7 +2,6 @@
 ---
 # vars file for bootstrap
 wiki_packages: 
-  - nginx 
   - php8.2
   - php8.2-fpm
   - php8.2-pgsql

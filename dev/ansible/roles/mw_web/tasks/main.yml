@@ -1,0 +1,65 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mywiki
+- name: handlers to restart postgres
+  meta: flush_handlers
+
+- name: download MediaWiki
+  get_url:
+    url: "{{ url }}"
+    dest: /tmp/
+
+- name: create directory for MediaWiki
+  file:
+    path: "{{ path_mywiki }}"
+    state: directory
+    owner: "www-data"
+
+- name: Extract mediawiki.tar.gz into /var/www/mediawiki
+  unarchive:
+    src: /tmp/mediawiki-1.45.3.tar.gz
+    dest: "{{ path_mywiki}}"
+    extra_opts: [--strip-components=1]
+    remote_src: yes
+
+- name: install MediaWiki
+  run_once: true
+  shell: >
+    php maintenance/run.php install 
+    --dbtype="postgres" 
+    --dbname="{{ mw_db_name }}" 
+    --dbserver="{{ mwdb_host }}" 
+    --dbuser="{{ mw_db_user }}" 
+    --dbpass="{{ mw_db_password}}" 
+    --dbmwschema="public" 
+    --server="http://{{ hostvars["lb-1"]["ansible_host"] }}:3000" 
+    --scriptpath=""
+    --pass="{{ mediawiki_admin_pass }}" 
+    "{{ mediawiki_name }}" "{{ mediawiki_admin_user }}"
+  args:
+    chdir: "{{ path_mywiki }}"
+    creates: "{{ path_mywiki }}/LocalSettings.php"
+  notify: restart nginx
+
+- name: LocalSettings.php from mw-web1
+  run_once: true
+  fetch:
+    src: "{{ path_mywiki }}/LocalSettings.php"
+    dest: "/tmp/LocalSettings.php"
+    flat: yes
+
+- name: copy LocalSettings.php to all web servers
+  copy:
+    src: "/tmp/LocalSettings.php"
+    dest: "{{ path_mywiki }}/LocalSettings.php"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0644"
+
+- name: permissions for LocalSettings.php
+  file:
+    path: "{{ path_mywiki }}/LocalSettings.php"
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  notify: restart nginx
