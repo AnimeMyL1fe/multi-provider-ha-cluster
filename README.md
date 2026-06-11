@@ -97,9 +97,9 @@ s3_secret: "{{ vault_s3_secret }}"
 ```
 ansible-playbook deploy.yml
 ```
-# Или с паролем от Vault:
+Или с паролем от Vault:
 ```
 ansible-playbook deploy.yml --vault-pass-file=.ваш_vault
 ```
 После завершения деплоя стоит зайти и прочекать Patroni-кластер, а также сам Веб + Zabbix
-**Good luck, хуйли.**
+## **Good luck, хуйли.**
