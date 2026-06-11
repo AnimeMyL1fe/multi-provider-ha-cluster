@@ -26,6 +26,7 @@
 ## 📂 Структура репозитория
 
 text
+```
 .
 ├── terraform_proxmox/     # Слой IaC для локальной виртуализации (On-Premise)
 │   └── modules/
@@ -42,6 +43,7 @@ text
     ├── inventory          # Описание целевых хостов по окружениям
     ├── group_vars/        # Переменные для ролей 
     └── roles/             # Роли для деплоя
+```
 
 ## 🚀 Quick Start
 > **ЕГО НЕТ. Ток мучение.**
@@ -53,6 +55,7 @@ text
 
 ### 2. TERRAFORM с S3 remote state
 Поменяйте значения на свои для удаленного стейта в файле terraform_yandex/provider.tf:
+```
 backend "s3" {
   endpoints = {
     s3 = "[https://storage.yandexcloud.net](https://storage.yandexcloud.net)" # Сторэдж S3
@@ -66,10 +69,12 @@ backend "s3" {
   skip_requesting_account_id  = true 
   skip_s3_checksum            = true 
 }
+```
 
 > 💡 *Примечание:* Можно просто удалить S3-блок из provider.tf. Останется только экспортировать свои credentials Yandex Cloud. Подробнее в доке Яндекса. 
 > 
 Запуск Terraform:
+```
 export YC_TOKEN=$(yc iam create-token)
 export YC_CLOUD_ID=$(yc config get cloud-id)
 export YC_FOLDER_ID=$(yc config get folder-id) 
@@ -77,22 +82,24 @@ export YC_FOLDER_ID=$(yc config get folder-id)
 terraform init
 terraform plan
 terraform apply
+```
 
 ### 3. ANSIBLE
 Для бэкапов нужны токены из Яндекса. В файле group_vars/all.yml укажите свои данные (секреты):
-yaml
+```
 mw_db_password: "{{ vault_mw_db_password }}"
 zbxdb_password: "{{ vault_zbxdb_password }}"
 mediawiki_admin_pass: "{{ vault_mediawiki_admin_pass }}"
 s3_key: "{{ vault_s3_key }}"
 s3_secret: "{{ vault_s3_secret }}"
-
+```
 Запуск плейбука:
-bash
+```
 ansible-playbook deploy.yml
+```
 # Или с паролем от Vault:
+```
 ansible-playbook deploy.yml --vault-pass-file=.ваш_vault
-
+```
 После завершения деплоя стоит зайти и прочекать Patroni-кластер, а также сам Веб + Zabbix
 **Good luck, хуйли.**
-```
