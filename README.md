@@ -43,10 +43,6 @@
     ├── group_vars/        # Переменные для ролей 
     └── roles/             # Роли для деплоя
 ```
-
-## 🚀 Quick Start
-> **ЕГО НЕТ. Ток мучение.**
->
 ### 1. Подготовка облака (Yandex Cloud)
 Необходимо подготовить credentials яндекс облака (service-user и folder).
 
@@ -101,4 +97,3 @@ ansible-playbook deploy.yml
 ansible-playbook deploy.yml --vault-pass-file=.ваш_vault
 ```
 После завершения деплоя стоит зайти и прочекать Patroni-кластер, а также сам Веб + Zabbix
-## **Good luck, хуйли.**
